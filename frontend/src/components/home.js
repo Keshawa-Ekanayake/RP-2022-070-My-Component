@@ -77,8 +77,7 @@ export default class home extends Component {
         var img = new Image(this.state.uiFile);
         img.width = 64;
         img.height = 64;
-        //img.src = this.state.uiFile;
-        // img.src = new Image(this.state.uiFile);
+        
         var tensorImg = tf.browser.fromPixels(img).toFloat().expandDims();
         // var tensorImg = tf.browser.fromPixels(img).resizeNearestNeighbor(203.0, 126.0, 173.0).toFloat().expandDims();
         var prediction = model.predict(tensorImg).data()
