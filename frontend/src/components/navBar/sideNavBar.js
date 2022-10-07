@@ -3,7 +3,7 @@
  * PAGE     -   sideNavBar.js
  * 
  * ================================================
- * CREATED BY :   H.M. Kasuni Navodya (IT19144986)
+ * CREATED BY :   Ekanayake K.LW (IT19160758)
  */
 
 import React, { Component } from 'react'
