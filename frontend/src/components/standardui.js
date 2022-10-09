@@ -29,32 +29,31 @@ export default class StandarUI extends Component {
     // }
     render() {
         return (
-
             <div>
-                <div className="text">
-                    <form>
-                        <div class="formContainer">
-                            <h3>test</h3><hr />
-                        </div>
-                        <div class="container">
-                            <img src='/asset' style={{ width: "50px", height: "50px" }}></img>
-                            <h3>test</h3>
-                            <input
-                                type="text"
-                                name="username"
-                                required
-                            />
-                            <input
-                                type="checkbox"
-                                name="remember me"
-                                required
-                            />
-                            <button type="submit">login</button>
-                            <a href="#">forgot</a>
-                            <br /><br /><br />
-                        </div>
-                    </form>
-                </div>
+                <form>
+                    <div>
+                        <h3>test</h3><hr />
+                    </div>
+                    <div>
+                        <img src="/asset" style={{ width: "50px", height: "50px" }} /><br />
+                        <h3>test</h3><br />
+                        <span>username</span><br />
+                        <input
+                            type="text"
+                            name="username"
+                            required
+                        /><br />
+                        <input
+                            type="checkbox"
+                            name="remember me"
+                            required
+                        />
+                        <span>remember me</span><br />
+                        <button type="submit">login</button><br />
+                        <a href="#">forgot</a><br />
+                        <br /><br /><br />
+                    </div>
+                </form>
             </div>
         )
 
