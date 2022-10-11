@@ -5,28 +5,6 @@ export default class StandarUI extends Component {
     constructor(props) {
         super(props);
     }
-    /**
-       * The function to navigate to the add normal item page
-    */
-    // navigateToAddNormalitempage(e, productID, userId) {
-    //     userId = this.state.userId;
-    //     window.location = `/insertItem/${productID}/${userId}`;
-    // }
-    /**
-       * The function written to get all the men product details
-       * Uses - setState()
-       * API CALL - GET ALL MEN PRODUCTS
-       */
-    // componentDidMount() {
-    //     Axios.get('http://localhost:3001/product/getAllMenProducts')
-    //         .then(response => {
-    //             this.setState({ menProducts: response.data.data });
-    //         }).catch(error => {
-    //             alert(error.message);
-    //         })
-
-    //     this.setState({ userId: this.props.match.params.userId });
-    // }
     render() {
         return (
             <div>
@@ -56,6 +34,5 @@ export default class StandarUI extends Component {
                 </form>
             </div>
         )
-
     }
 }

@@ -8,14 +8,35 @@ import * as tf from '@tensorflow/tfjs';
 import firebase from './../Firebase/firebase';
 import UIGeneratorPage from '../UIGenerator/uigenerator';
 import ReactHtmlParser from 'react-html-parser'
+import Axios from 'axios';
 
 const initialStates = {
     "userInterface": '',
     "uiFile": '',
     "model": '',
     "generatedCode": '',
-    "generatedXMLFile" : ''
+    "generatedXMLFile": '',
+    "uimodel": [],
+    "heading": '',
+    "label": '',
+    "textbox": '',
+    "checkbox": '',
+    "button": '',
+    "hyperlink": '',
+    "headingmargin": '',
+    "labelmargin": '',
+    "textboxmargin": '',
+    "checkboxmargin": '',
+    "buttonmargin": '',
+    "hyperlinkmargin": '',
+    "headingallign": '',
+    "labelallign": '',
+    "textboxallign": '',
+    "checkboxallign": '',
+    "buttonallign": '',
+    "hyperlinkallign": '',
 }
+
 export default class home extends Component {
 
     constructor(props) {
@@ -26,32 +47,60 @@ export default class home extends Component {
         this.state = initialStates;
     }
 
+    componentDidMount() {
+        Axios.get('http://localhost:3001/uigenerator/getUIModel')
+          .then(response => {
+            console.log('test', response.data.data[0].textbox)
+            this.setState({ uimodel: response.data.data });
+            this.setState({ heading: response.data.data[0].heading });
+            this.setState({ label: response.data.data[0].label });
+            this.setState({ textbox: response.data.data[0].textbox });
+            this.setState({ checkbox: response.data.data[0].checkbox });
+            this.setState({ button: response.data.data[0].button });
+            this.setState({ hyperlink: response.data.data[0].hyperlink });
+            this.setState({ headingmargin: response.data.data[0].headingMargin });
+            this.setState({ labelmargin: response.data.data[0].labelMargin });
+            this.setState({ textboxmargin: response.data.data[0].textboxMargin });
+            this.setState({ buttonmargin: response.data.data[0].buttonMargin });
+            this.setState({ checkboxmargin: response.data.data[0].checkboxMargin });
+            this.setState({ hyperlinkmargin: response.data.data[0].hyperlinkMargin });
+            this.setState({ headingallign: response.data.data[0].headingAllignment });
+            this.setState({ labelallign: response.data.data[0].labelAllignment });
+            this.setState({ textboxallign: response.data.data[0].textboxAllignment });
+            this.setState({ checkboxallign: response.data.data[0].checkboxAllignment });
+            this.setState({ buttonallign: response.data.data[0].buttonAllignment });
+            this.setState({ hyperlinkallign: response.data.data[0].hyperlinkAllignment });          
+          }).catch(error => {
+            alert(error.message);
+          })
+      }
+
     generateCode(response) {
 
         //CODE GENERATION START - NEED OPTMIZATION
         //Drawback - All UI do not have forms - Have a tag in XML to determine if it is form/normal div!
         // console.log('Response : ', response);
         //XML File
-        let genXMLCode = UIGeneratorPage.generateXMLFileHeader('Test');//XML Header
+        let genXMLCode = UIGeneratorPage.generateXMLFileHeader(this.state.heading);//XML Header
         genXMLCode = genXMLCode + '\t' + '<Canvas>' + '\n';
 
         let code = '<div>' + '\n';
         code = code + '\t' + '<form>' + '\n';
 
         code = code + '\t\t' + '<div>' + '\n';
-        code = code + '\t\t\t' + '<h3>test</h3><hr/>' + '\n';
+        code = code + '\t\t\t' + '<h3>'+ this.state.heading +'</h3><hr/>' + '\n';
         code = code + '\t\t' + '</div>' + '\n';
 
         code = code + '\t\t' + '<div>' + '\n';
         //Label
         if (response[1].toFixed(2) == HeadingValue) {
-            code = code + UIGeneratorPage.generateCodeForHeading('test');
-            genXMLCode = genXMLCode + UIGeneratorPage.generateXMLHeaderTag('header', 'testHeader', 'Left', 'Right', '0,0,0,0');//For XML
+            code = code + UIGeneratorPage.generateCodeForHeading(this.state.heading);
+            genXMLCode = genXMLCode + UIGeneratorPage.generateXMLHeaderTag('header', this.state.heading , this.state.headingallign, 'Right', this.state.headingmargin);//For XML
         }
 
         if (response[7].toFixed(2) == LabelValue) {
-            code = code + UIGeneratorPage.generateCodeForLabel('test');
-            genXMLCode = genXMLCode + UIGeneratorPage.generateXMLHeaderTag('label', 'testLabel', 'Left', 'Right', '0,0,0,0');//For XML
+            code = code + UIGeneratorPage.generateCodeForLabel(this.state.label);
+            genXMLCode = genXMLCode + UIGeneratorPage.generateXMLHeaderTag('label', this.state.label, this.state.labelallign, 'Right', this.state.labelmargin);//For XML
         }
 
         if (response[4].toFixed(2) == LogoValue) {
@@ -59,23 +108,24 @@ export default class home extends Component {
         }
 
         if (response[5].toFixed(2) == TextBoxValue) {
-            code = code + UIGeneratorPage.generateCodeFortextbox('username');
-            genXMLCode = genXMLCode + UIGeneratorPage.generateXMLTextBoxTag('Test TxtBoxLabel', 'Test TxtBoxName', 'string', 'Test Placeholder', 'Left', 'Right', '0,0,0,0');
+            code = code + UIGeneratorPage.generateCodeFortextbox(this.state.textbox);
+            genXMLCode = genXMLCode + UIGeneratorPage.generateXMLTextBoxTag(this.state.textbox, this.state.textbox, 'string', 'Placeholder', this.state.textboxallign, 'Right', this.state.textboxmargin);
         }
 
         if (response[6].toFixed(2) == CheckBoxValue) {
-            code = code + UIGeneratorPage.generateCodeForcheckbox('remember me');
-            genXMLCode = genXMLCode + UIGeneratorPage.generateXMLCheckBoxTag('Test CheckBoxLabel', 'Test TxtBoxName', 'checkbox', 'Test Content', 'TestValue', 'Left', 'Right', '0,0,0,0');
+            code = code + UIGeneratorPage.generateCodeForcheckbox(this.state.checkbox);
+            genXMLCode = genXMLCode + UIGeneratorPage.generateXMLCheckBoxTag(this.state.checkbox, this.state.checkbox, 'checkbox', 'Content', 'TestValue', this.state.checkboxallign, 'Right', this.state.checkboxmargin);
         }
 
         if (response[14].toFixed(2) == ButtonValue) {
-            code = code + UIGeneratorPage.generateCodeForButton('login');
-            genXMLCode = genXMLCode + UIGeneratorPage.generateXMLButtonTag('Test Button', 'Test Btn', '150', '100', 'Left', '0,0,0,0');
+            code = code + UIGeneratorPage.generateCodeForButton(this.state.button);
+            genXMLCode = genXMLCode + UIGeneratorPage.generateXMLButtonTag(this.state.button, this.state.button, '150', '100', this.state.buttonallign, this.state.buttonmargin);
         }
 
         if (response[2].toFixed(2) == HyperLinkValue) {
-            code = code + UIGeneratorPage.generateCodeForHyperlink('forgot');
+            code = code + UIGeneratorPage.generateCodeForHyperlink(this.state.hyperlink);
         }
+
         code = code + '\t\t\t' + '<br /><br /><br />' + '\n';
         code = code + '\t\t' + '</div>' + '\n';
 
@@ -101,7 +151,7 @@ export default class home extends Component {
         var img = new Image(this.state.uiFile);
         img.width = 64;
         img.height = 64;
-        
+
         var tensorImg = tf.browser.fromPixels(img).toFloat().expandDims();
         // var tensorImg = tf.browser.fromPixels(img).resizeNearestNeighbor(203.0, 126.0, 173.0).toFloat().expandDims();
         var prediction = model.predict(tensorImg).data()
