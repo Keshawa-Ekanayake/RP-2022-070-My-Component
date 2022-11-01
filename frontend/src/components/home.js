@@ -48,6 +48,7 @@ export default class home extends Component {
     }
 
     componentDidMount() {
+        document.getElementById('submitBtn').disabled=true;
         Axios.get('http://localhost:3001/uigenerator/getUIModel')
           .then(response => {
             console.log('test', response.data.data[0].textbox)
@@ -158,7 +159,9 @@ export default class home extends Component {
             .then((res) => {
                 alert('Predicted successfully!');
                 console.log(res)
-                this.generateCode(res);
+                // this.generateCode(res);
+                window.location='/userinput';
+                
             })
             .catch(error => {
                 alert(error);
@@ -180,6 +183,7 @@ export default class home extends Component {
         const downloadImage = await fileRef.getDownloadURL();
         this.setState({ userInterface: downloadImage });
         alert('Image Uploaded Successfully!!', file.name);
+        document.getElementById('submitBtn').disabled=false;
     }
 
     navigatetotest() {
@@ -209,8 +213,8 @@ export default class home extends Component {
                                         </div>
                                         <div class="card-body">
                                             <center>
-                                                <button type="submit" className="btn btn-secondary" id="cancelBtn" onClick={this.navigatetotest}>Standard UI</button>
-                                                <button type="submit" className="btn btn-secondary" id="cancelBtn" onClick={this.handleTestBtn}>Submit</button>
+                                                {/* <button type="submit" className="btn btn-secondary" id="cancelBtn" onClick={this.navigatetotest}>Standard UI</button> */}
+                                                <button type="submit" className="btn btn-secondary" id="submitBtn" onClick={this.handleTestBtn}>Submit</button>
                                                 {/* <button type="submit" className="btn btn-primary" id="submitBtn" style={{ width: "200px" }} onClick={this.handleTestBtn}>Test Sanjay</button><br /><br />*/}
                                                 <form onSubmit={this.onSubmit}>
                                                     {/* <FileUploader /> */}
@@ -231,7 +235,7 @@ export default class home extends Component {
                                                     {/*Sanjay commented above */}
                                                     {/* <button type="submit" className="btn btn-primary" id="submitBtn" style={{ width: "200px" }} onClick={this.handleTestBtn}>Submit</button><br /><br /> */}
 
-                                                    <div class="alert alert-secondary" role="alert" style={{ color: 'white', fontFamily: 'Noto Sans, sans-serif' }}>
+                                                    {/* <div class="alert alert-secondary" role="alert" style={{ color: 'white', fontFamily: 'Noto Sans, sans-serif' }}>
                                                         Display Sketch and XML file
                                                     </div><br />
 
@@ -241,7 +245,7 @@ export default class home extends Component {
                                                                 Standard UI
                                                             </div>
                                                             {ReactHtmlParser(this.state.generatedCode)}
-                                                            {/* <p style={{ backgroundColor: '#b7b7c7', height: '450px', borderRadius: '10px' }}></p> */}
+                                                            
                                                         </div>
                                                         <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4">
                                                             <div class="alert alert-dark" role="alert" style={{ color: 'white', fontFamily: 'Noto Sans, sans-serif' }}>
@@ -249,13 +253,13 @@ export default class home extends Component {
                                                             </div>
                                                             <textarea value={this.state.generatedXMLFile} id="xmlString" className="textAreaStyle"></textarea>
                                                         </div>
-                                                    </div>
+                                                    </div> */}
                                                 </form>
                                             </center>
                                         </div>
-                                        <div class="col-12 text-end">
+                                        {/* <div class="col-12 text-end">
                                             <a class="btn btn-primary" href="" style={{ marginRight: '30px', marginTop: '-20px' }}>Download XML File</a>
-                                        </div>
+                                        </div> */}
                                     </div></center>
                             </div>
                         </div>
