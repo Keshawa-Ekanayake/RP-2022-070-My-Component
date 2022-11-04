@@ -1,5 +1,5 @@
 // -----------------------------
-//     PRODUCT MODEL - BACKEND
+//     UI MODEL - BACKEND
 // -----------------------------
 
 //Function - Product management

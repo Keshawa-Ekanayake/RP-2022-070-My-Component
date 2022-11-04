@@ -37,5 +37,14 @@ router.route('/getUIModel').get(async (req, res) => {
         })
 });
 
+router.route('/deleteUIModel').delete(async (req, res) => {
+    await UIModel.deleteMany({})
+        .then(data => {
+            res.status(200).send({ data: data });
+        }).catch(error => {
+            res.status(500).send({ error: error });
+        })
+});
+
 //implement a delete all route
 module.exports = router;

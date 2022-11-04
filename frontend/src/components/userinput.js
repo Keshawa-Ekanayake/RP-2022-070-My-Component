@@ -9,18 +9,18 @@ const initialStates = {
     "checkbox": '',
     "button": '',
     "hyperlink": '',
-    "headingmargin": '',
-    "labelmargin": '',
-    "textboxmargin": '',
-    "checkboxmargin": '',
-    "buttonmargin": '',
-    "hyperlinkmargin": '',
-    "headingallign": '',
-    "labelallign": '',
-    "textboxallign": '',
-    "checkboxallign": '',
-    "buttonallign": '',
-    "hyperlinkallign": '',
+    "headingmargin": '0,0,0,0',
+    "labelmargin": '0,0,0,0',
+    "textboxmargin": '0,0,0,0',
+    "checkboxmargin": '0,0,0,0',
+    "buttonmargin": '0,0,0,0',
+    "hyperlinkmargin": '0,0,0,0',
+    "headingallign": 'left',
+    "labelallign": 'left',
+    "textboxallign": 'left',
+    "checkboxallign": 'left',
+    "buttonallign": 'left',
+    "hyperlinkallign": 'left',
 }
 
 
@@ -34,47 +34,108 @@ export default class UserInput extends Component {
         this.state = initialStates;
     }
 
-    onChange(e) {
-        this.setState({ [e.target.name]: e.target.value });
-    }
-
-    onSubmit(e) {
-        e.preventDefault();
-
-
-        let uimodel = {
-            heading: this.state.heading,
-            label: this.state.label,
-            textbox: this.state.textbox,
-            checkbox: this.state.checkbox,
-            button: this.state.button,
-            hyperlink: this.state.hyperlink,
-            headingMargin: this.state.headingmargin,
-            labelMargin: this.state.labelmargin,
-            textboxMargin: this.state.textboxmargin,
-            checkboxMargin: this.state.checkboxmargin,
-            buttonMargin: this.state.buttonmargin,
-            hyperlinkMargin: this.state.hyperlinkmargin,
-            headingAllignment: this.state.headingallign,
-            labelAllignment: this.state.labelallign,
-            textboxAllignment: this.state.textboxallign,
-            checkboxAllignment: this.state.checkboxallign,
-            buttonAllignment: this.state.buttonallign,
-            hyperlinkAllignment: this.state.hyperlinkallign,
-        }
-        
-        console.log('Test', uimodel)
-        Axios.post('http://localhost:3001/uigenerator/addUIModel', uimodel)
+    componentDidMount() {
+        Axios.delete('http://localhost:3001/uigenerator/deleteUIModel')
             .then(response => {
-                alert('UI Details Added Successfully');
-                // window.location = "/viewProducts";
+                alert('Database Cleaned');
             }).catch(error => {
                 alert(error.message);
             })
 
-
     }
 
+    onChange(e) {
+        this.setState({ [e.target.name]: e.target.value });
+    }
+
+    //Validation Part
+    validate() {
+        let isError = false;
+
+        if (this.state.heading === "") {
+            isError = true;
+            alert("you need to enter the heading name");
+
+        }
+
+        if (this.state.label === "") {
+            isError = true;
+            alert("you need to enter the label name");
+
+        }
+
+        if (this.state.textbox === "") {
+            isError = true;
+            alert("you need to enter the textbox name");
+
+        }
+
+        if (this.state.checkbox === "") {
+            isError = true;
+            alert("you need to enter the checkbox name");
+
+        }
+
+        if (this.state.button === "") {
+            isError = true;
+            alert("you need to enter the button name");
+
+        }
+
+        if (this.state.hyperlink === "") {
+            isError = true;
+            alert("you need to enter the hyperlink name");
+
+        }
+
+        if (isError) {
+            this.setState({
+                ...this.state,
+                // ...errors,
+            });
+        }
+
+        return isError;
+    }
+
+    onSubmit(e) {
+        e.preventDefault();
+        const err = this.validate();
+        console.log("Error>>>", err);
+        if (!err) {
+            let uimodel = {
+                heading: this.state.heading,
+                label: this.state.label,
+                textbox: this.state.textbox,
+                checkbox: this.state.checkbox,
+                button: this.state.button,
+                hyperlink: this.state.hyperlink,
+                headingMargin: this.state.headingmargin,
+                labelMargin: this.state.labelmargin,
+                textboxMargin: this.state.textboxmargin,
+                checkboxMargin: this.state.checkboxmargin,
+                buttonMargin: this.state.buttonmargin,
+                hyperlinkMargin: this.state.hyperlinkmargin,
+                headingAllignment: this.state.headingallign,
+                labelAllignment: this.state.labelallign,
+                textboxAllignment: this.state.textboxallign,
+                checkboxAllignment: this.state.checkboxallign,
+                buttonAllignment: this.state.buttonallign,
+                hyperlinkAllignment: this.state.hyperlinkallign,
+            }
+
+            console.log('Test', uimodel)
+            Axios.post('http://localhost:3001/uigenerator/addUIModel', uimodel)
+                .then(response => {
+                    alert('UI Details Added Successfully');
+                    window.location = "/standardui";
+                }).catch(error => {
+                    alert(error.message);
+                })
+
+
+        }
+    }
     render() {
         return (
             <div>
@@ -166,6 +227,7 @@ export default class UserInput extends Component {
                                                             name="headingmargin"
                                                             id="headingmargin"
                                                             onChange={this.onChange}
+                                                            value={this.state.headingmargin}
                                                             required
                                                             style={{ border: "1px solid #c8cfcb", backgroundColor: "#edf0eb" }} />
                                                     </div>
@@ -178,6 +240,7 @@ export default class UserInput extends Component {
                                                             name="labelmargin"
                                                             id="labelmargin"
                                                             onChange={this.onChange}
+                                                            value={this.state.labelmargin}
                                                             required
                                                             style={{ border: "1px solid #c8cfcb", backgroundColor: "#edf0eb" }} />
                                                     </div>
@@ -189,6 +252,7 @@ export default class UserInput extends Component {
                                                             name="textboxmargin"
                                                             id="textboxmargin"
                                                             onChange={this.onChange}
+                                                            value={this.state.textboxmargin}
                                                             required
                                                             style={{ border: "1px solid #c8cfcb", backgroundColor: "#edf0eb" }} />
                                                     </div>
@@ -200,6 +264,7 @@ export default class UserInput extends Component {
                                                             name="checkboxmargin"
                                                             id="checkboxmargin"
                                                             onChange={this.onChange}
+                                                            value={this.state.checkboxmargin}
                                                             required
                                                             style={{ border: "1px solid #c8cfcb", backgroundColor: "#edf0eb" }} />
                                                     </div>
@@ -211,6 +276,7 @@ export default class UserInput extends Component {
                                                             name="buttonmargin"
                                                             id="buttonmargin"
                                                             onChange={this.onChange}
+                                                            value={this.state.buttonmargin}
                                                             required
                                                             style={{ border: "1px solid #c8cfcb", backgroundColor: "#edf0eb" }} />
                                                     </div>
@@ -222,6 +288,7 @@ export default class UserInput extends Component {
                                                             name="hyperlinkmargin"
                                                             id="hyperlinkmargin"
                                                             onChange={this.onChange}
+                                                            value={this.state.hyperlinkmargin}
                                                             required
                                                             style={{ border: "1px solid #c8cfcb", backgroundColor: "#edf0eb" }} />
                                                     </div>
@@ -236,6 +303,7 @@ export default class UserInput extends Component {
                                                             name="headingallign"
                                                             id="headingallign"
                                                             onChange={this.onChange}
+                                                            value={this.state.headingallign}
                                                             required
                                                             style={{ border: "1px solid #c8cfcb", backgroundColor: "#edf0eb" }} />
                                                     </div>
@@ -248,6 +316,7 @@ export default class UserInput extends Component {
                                                             name="labelallign"
                                                             id="labelallign"
                                                             onChange={this.onChange}
+                                                            value={this.state.labelallign}
                                                             required
                                                             style={{ border: "1px solid #c8cfcb", backgroundColor: "#edf0eb" }} />
                                                     </div>
@@ -259,6 +328,7 @@ export default class UserInput extends Component {
                                                             name="textboxallign"
                                                             id="textboxallign"
                                                             onChange={this.onChange}
+                                                            value={this.state.textboxallign}
                                                             required
                                                             style={{ border: "1px solid #c8cfcb", backgroundColor: "#edf0eb" }} />
                                                     </div>
@@ -270,6 +340,7 @@ export default class UserInput extends Component {
                                                             name="checkboxallign"
                                                             id="checkboxallign"
                                                             onChange={this.onChange}
+                                                            value={this.state.checkboxallign}
                                                             required
                                                             style={{ border: "1px solid #c8cfcb", backgroundColor: "#edf0eb" }} />
                                                     </div>
@@ -281,6 +352,7 @@ export default class UserInput extends Component {
                                                             name="buttonallign"
                                                             id="buttonallign"
                                                             onChange={this.onChange}
+                                                            value={this.state.buttonallign}
                                                             required
                                                             style={{ border: "1px solid #c8cfcb", backgroundColor: "#edf0eb" }} />
                                                     </div>
@@ -292,6 +364,7 @@ export default class UserInput extends Component {
                                                             name="hyperlinkallign"
                                                             id="hyperlinkallign"
                                                             onChange={this.onChange}
+                                                            value={this.state.hyperlinkallign}
                                                             required
                                                             style={{ border: "1px solid #c8cfcb", backgroundColor: "#edf0eb" }} />
                                                     </div>
@@ -300,7 +373,6 @@ export default class UserInput extends Component {
                                                 <br /><br /><br /><br /><br />
                                                 <br /><br />
                                             </div><br />
-                                            {/* <button type="submit" style={{ width: '98%', marginLeft: '111%' }} onClick={this.onSubmit} className="btn btn-dark" id="submitBtn">Submit</button> */}
                                         </div>
                                     </form>
                                     <button type="submit" style={{ width: '98%', marginLeft: '111%' }} onClick={this.onSubmit} className="btn btn-dark" id="submitBtn">Submit</button>
